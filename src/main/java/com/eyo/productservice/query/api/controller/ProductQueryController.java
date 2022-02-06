@@ -1,6 +1,8 @@
 package com.eyo.productservice.query.api.controller;
 
 import com.eyo.productservice.command.api.model.ProductRestModel;
+import com.eyo.productservice.query.api.queries.GetProductQuery;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,9 @@ public class ProductQueryController {
 
     @GetMapping
     public List<ProductRestModel> getAllProducts() {
-        return null;
+        GetProductQuery productQuery = new GetProductQuery();
+
+        return queryGateway.query(productQuery,
+                ResponseTypes.multipleInstancesOf(ProductRestModel.class)).join();
     }
 }
